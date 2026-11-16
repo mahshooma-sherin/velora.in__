@@ -29,7 +29,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     }
   },
 
-  // 2. Vandana & Sharan (A2)
+  // 2. Vandana & Sharan (A2) - Aesthetic Traditional Hindu Wedding
   {
     id: 'T2',
     collection: 'A',
@@ -39,7 +39,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     category: ['Hindu Wedding', 'Traditional', 'Floral'],
     description: 'Traditional floral motifs with auspicious marigold accents, sacred muhurtham schedule, and direct venue directions.',
     demoUrl: 'https://vandana-sharan.vercel.app',
-    coverImage: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=80',
     features: ['Muhurtham Schedule', 'Traditional Floral Motifs', 'One-Click Navigation', 'Photo Highlights']
   },
 
@@ -81,7 +81,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     category: ['Hindu Wedding', 'Traditional', 'Modern'],
     description: 'A harmonious blend of Kerala heritage aesthetics, gold thread borders, and interactive ceremony schedule.',
     demoUrl: 'https://umesh-neethu-seven.vercel.app',
-    coverImage: 'https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=1000&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1617059063772-34532796cdb5?auto=format&fit=crop&w=1000&q=80',
     isPopular: true,
     features: ['Music Autoplay Background', 'Couple Story Timeline', 'Venue Directions Map', 'Guest Counter']
   },
@@ -96,7 +96,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     category: ['Muslim Wedding', 'Luxury', 'Modern'],
     description: 'Opulent ivory and rose gold design with smooth animated entrances, couple gallery, and instant WhatsApp booking.',
     demoUrl: 'https://askar-sufair.vercel.app',
-    coverImage: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1000&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1545232979-8bf68ee9b1af?auto=format&fit=crop&w=1000&q=80',
     isFeatured: true,
     features: ['Smooth Scroll Animations', 'Curated Photo Gallery', 'Instant WhatsApp RSVP', 'Dress Code Guide']
   },
@@ -169,7 +169,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     category: ['Modern', 'Luxury', 'Minimal'],
     description: 'Clean Scandinavian luxury with warm sand textures, subtle cursor effects, and high-fashion editorial photo album.',
     demoUrl: 'https://rohit-tania.vercel.app',
-    coverImage: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1000&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80',
     features: ['Scandinavian Minimalism', 'Custom Serif Monogram', 'Interactive Story Carousel', 'Calendar Sync']
   },
 
@@ -183,7 +183,7 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     category: ['Hindu Wedding', 'Traditional', 'Luxury'],
     description: 'The pinnacle of regal heritage. Hand-drawn brass lamp motifs, nadaswaram instrumental intro, and custom domain ready.',
     demoUrl: 'https://ramkumar-priyadarshini.vercel.app',
-    coverImage: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?auto=format&fit=crop&w=1000&q=80',
     isPopular: true,
     isFeatured: true,
     features: ['Custom Domain Included', 'Nadaswaram Audio Intro', 'Hand-Crafted Heritage Crest', 'VIP Guest Table RSVP']
