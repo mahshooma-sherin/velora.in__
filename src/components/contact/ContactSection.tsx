@@ -61,6 +61,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedTempl
 
     setSubmittedId(newEnquiry.id);
     setSubmitted(true);
+
+    // Automatically open WhatsApp with the pre-filled enquiry directly to the business owner (+91 70254 23395)
+    const formattedMsg = `*VELORA CELEBRATION ENQUIRY (#${newEnquiry.id})*
+• *Customer Name:* ${name}
+• *WhatsApp Number:* ${whatsapp}
+• *Event Type:* ${eventType}
+• *Event Date:* ${eventDate || 'TBD'}
+• *Selected Package:* ${selectedPackage}
+${selectedTemplate ? `• *Template Choice:* ${selectedTemplate}\n` : ''}${message ? `• *Customer Notes:* ${message}\n` : ''}
+Sent from Velora Website`;
+
+    const forwardUrl = getWhatsAppLink(formattedMsg);
+    window.open(forwardUrl, '_blank');
   };
 
   const getWhatsAppForwardUrl = () => {
@@ -382,13 +395,13 @@ Looking forward to creating something beautiful with Velora!`;
                         type="submit"
                         className="w-full py-3.5 px-6 rounded-full bg-[#34251D] hover:bg-[#C6A16B] text-[#F8F3EC] text-xs uppercase tracking-widest font-medium transition-all duration-300 shadow-md flex items-center justify-center gap-2 group"
                       >
-                        <Send className="w-4 h-4 text-[#C6A16B] group-hover:text-white transition-colors" />
-                        <span>Submit Celebration Enquiry</span>
+                        <MessageCircle className="w-4 h-4 text-[#C6A16B] group-hover:text-white transition-colors" />
+                        <span>Submit & Send Enquiry via WhatsApp</span>
                       </button>
                     </div>
 
                     <p className="text-center text-[11px] text-[#7E6F64] pt-1">
-                      🔒 Your details are safe with us. We only contact you regarding your wedding invitation.
+                      📱 Opens WhatsApp directly with your enquiry to our team at +91 70254 23395.
                     </p>
                   </motion.form>
                 )}
