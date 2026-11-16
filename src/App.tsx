@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StoreProvider } from './context/StoreContext';
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/home/Hero';
-import { ServicesSection } from './components/home/ServicesSection';
-import { FeaturedTemplatesSection } from './components/home/FeaturedTemplatesSection';
-import { HowItWorksSection } from './components/home/HowItWorksSection';
-import { WhyChooseVeloraSection } from './components/home/WhyChooseVeloraSection';
 import { TemplateGallery } from './components/templates/TemplateGallery';
 import { InvitationGallery } from './components/invitations/InvitationGallery';
 import { PricingSection } from './components/pricing/PricingSection';
-import { TestimonialsSection } from './components/home/TestimonialsSection';
+import { HowItWorksSection } from './components/home/HowItWorksSection';
 import { AboutPage } from './components/about/AboutPage';
+import { TestimonialsSection } from './components/home/TestimonialsSection';
 import { FaqSection } from './components/home/FaqSection';
 import { ContactSection } from './components/contact/ContactSection';
-import { CtaBanner } from './components/home/CtaBanner';
 import { Footer } from './components/layout/Footer';
 import { LivePreviewModal } from './components/preview/LivePreviewModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -76,69 +72,53 @@ const AppContent: React.FC = () => {
       <Navbar activeSection={activeSection} onNavigate={handleNavigate} />
 
       <main className="flex-1">
-        {/* PAGE 1: HERO */}
+        {/* HERO SECTION */}
         <Hero
           onExploreClick={() => handleNavigate('templates')}
           onCreateClick={() => handleNavigate('contact')}
-          onPreviewSample={() => handleNavigate('templates')}
         />
 
-        {/* 1. OUR SERVICES */}
-        <ServicesSection />
-
-        {/* 2. FEATURED WEDDING TEMPLATES */}
-        <FeaturedTemplatesSection
-          onExploreAll={() => handleNavigate('templates')}
-          onSelectForOrder={handleSelectForOrder}
-        />
-
-        {/* PAGE 6: HOW IT WORKS (Connected 4-step timeline) */}
-        <HowItWorksSection />
-
-        {/* 4. WHY CHOOSE VELORA */}
-        <WhyChooseVeloraSection />
-
-        {/* PAGE 3: WEDDING WEBSITE TEMPLATES (All 30 vercel templates with filters) */}
+        {/* 1. WEDDING WEBSITE TEMPLATES (30 Live Templates with Filters & Live Preview) */}
         <TemplateGallery onSelectForOrder={handleSelectForOrder} />
 
-        {/* PAGE 4: DIGITAL INVITATIONS (Gallery across all categories) */}
+        {/* 2. DIGITAL INVITATIONS (Videos, PDFs, E-Cards) */}
         <InvitationGallery onSelectForOrder={handleSelectForOrder} />
 
-        {/* PAGE 5: PACKAGES & PRICING (Starter ₹499, Classic ₹799, Royal ₹999 + expandable) */}
+        {/* 3. PACKAGES & PRICING (Starter ₹499, Classic ₹799, Royal ₹999) */}
         <PricingSection onSelectPackage={() => handleNavigate('contact')} />
 
-        {/* 5. CUSTOMER TESTIMONIALS */}
-        <TestimonialsSection />
+        {/* 4. HOW IT WORKS (Simple 4-Step Process) */}
+        <HowItWorksSection />
 
-        {/* PAGE 2: ABOUT VELORA */}
+        {/* 5. ABOUT VELORA */}
         <AboutPage />
 
-        {/* 6. FREQUENTLY ASKED QUESTIONS */}
+        {/* 6. CUSTOMER TESTIMONIALS */}
+        <TestimonialsSection />
+
+        {/* 7. FREQUENTLY ASKED QUESTIONS */}
         <FaqSection />
 
-        {/* 7. CONTACT / WHATSAPP CTA BANNER */}
-        <CtaBanner onExploreTemplates={() => handleNavigate('templates')} />
-
-        {/* PAGE 7: CONTACT US (Functional form + WhatsApp button + confirmation) */}
+        {/* 8. SIMPLIFIED WHATSAPP CONTACT SECTION */}
         <ContactSection preselectedTemplateId={preselectedTemplateId} />
       </main>
 
-      {/* SECTION 9: FOOTER */}
+      {/* FOOTER */}
       <Footer
         onNavigate={handleNavigate}
         onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
-      {/* SECTION 4: INTERACTIVE LIVE PREVIEW MODAL */}
+      {/* INTERACTIVE LIVE PREVIEW MODAL */}
       <LivePreviewModal onSelectForOrder={handleSelectForOrder} />
 
-      {/* SECTION 6: ADMIN & CONTENT MANAGEMENT DASHBOARD */}
+      {/* OWNER CONTENT MANAGEMENT SYSTEM */}
       <AdminDashboard
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
       />
 
-      {/* FLOATING WHATSAPP BUTTON */}
+      {/* FLOATING WHATSAPP BUTTON (Always 1-Tap Ready) */}
       <FloatingWhatsApp />
     </div>
   );
