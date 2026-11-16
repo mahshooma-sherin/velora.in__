@@ -8,7 +8,6 @@ import { PricingSection } from './components/pricing/PricingSection';
 import { HowItWorksSection } from './components/home/HowItWorksSection';
 import { AboutPage } from './components/about/AboutPage';
 import { TestimonialsSection } from './components/home/TestimonialsSection';
-import { FaqSection } from './components/home/FaqSection';
 import { ContactSection } from './components/contact/ContactSection';
 import { Footer } from './components/layout/Footer';
 import { LivePreviewModal } from './components/preview/LivePreviewModal';
@@ -96,10 +95,7 @@ const AppContent: React.FC = () => {
         {/* 6. CUSTOMER TESTIMONIALS */}
         <TestimonialsSection />
 
-        {/* 7. FREQUENTLY ASKED QUESTIONS */}
-        <FaqSection />
-
-        {/* 8. SIMPLIFIED WHATSAPP CONTACT SECTION */}
+        {/* 7. SIMPLIFIED WHATSAPP CONTACT SECTION */}
         <ContactSection preselectedTemplateId={preselectedTemplateId} />
       </main>
 
