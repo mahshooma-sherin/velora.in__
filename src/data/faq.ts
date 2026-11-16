@@ -34,3 +34,4 @@ export const FAQ_DATA: FaqItem[] = [
     answer: 'Browse our Wedding Website Templates or Digital Invitations gallery, pick your favourite design, and click "Choose This Template" or "Enquire on WhatsApp". Our team will guide you through the 3 simple steps to submit your details!'
   }
 ];
+

@@ -161,3 +161,4 @@ export const INITIAL_INVITATIONS: DigitalInvitation[] = [
     customisationOptions: ['Baby Photo Highlight', 'Party Theme Palette', 'Venue Navigation Pin', 'WhatsApp RSVP Link']
   }
 ];
+

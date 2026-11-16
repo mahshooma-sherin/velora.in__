@@ -77,3 +77,4 @@ export const FeaturedTemplatesSection: React.FC<FeaturedTemplatesSectionProps> =
     </section>
   );
 };
+

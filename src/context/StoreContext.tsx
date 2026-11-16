@@ -29,8 +29,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
   brandName: 'VELORA',
   tagline: 'Every love story deserves its own design.',
   instagramHandle: '@velora__in_',
-  // The business owner can set their real phone number here or in the Admin Dashboard!
-  whatsappNumber: '918075304905', 
+  // Configured business enquiry number
+  whatsappNumber: '917025423395', 
   contactEmail: 'contact@velora.in',
   currencySymbol: '₹'
 };
@@ -72,7 +72,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [settings, setSettings] = useState<SiteSettings>(() => {
     try {
       const saved = localStorage.getItem('velora_settings');
-      return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...DEFAULT_SETTINGS,
+          ...parsed,
+          whatsappNumber: '917025423395', // Use owner's configured business enquiry number
+        };
+      }
+      return DEFAULT_SETTINGS;
     } catch {
       return DEFAULT_SETTINGS;
     }
@@ -219,3 +227,4 @@ export const useStore = () => {
   }
   return context;
 };
+

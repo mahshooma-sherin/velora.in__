@@ -150,3 +150,4 @@ To replace the logo with the original Velora graphic file, simply place your tra
 public/logo.png
 ```
 The website will automatically detect it and render it across all navigation bars, hero headers, loaders, and footers!
+

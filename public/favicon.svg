@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="22" fill="#34251D"/>
-  <circle cx="50" cy="50" r="38" stroke="#C6A16B" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
-  <text x="50" y="66" font-family="'Cormorant Garamond', Georgia, serif" font-size="54" font-weight="400" fill="#C6A16B" text-anchor="middle">V</text>
+  <rect width="100" height="100" rx="22" fill="#F8F3EC"/>
+  <!-- 4-point sparkle star -->
+  <path d="M68 20 Q68 25 72 25 Q68 25 68 30 Q68 25 64 25 Q68 25 68 20 Z" fill="#C6A16B" />
+  <!-- Calligraphic V -->
+  <path d="M26 36 C34 35 40 40 46 56 L49 66 C53 50 62 36 71 35 C73 35 74 36 73 38 C70 44 63 56 54 68 C45 80 40 81 44 76 C52 66 65 52 75 48" fill="none" stroke="#C6A16B" stroke-width="3" stroke-linecap="round" />
+  <!-- Leaf 1 -->
+  <path d="M72 42 C74 36 77 34 80 34 C80 39 77 42 72 44 Z" fill="#C6A16B" />
+  <!-- Leaf 2 -->
+  <path d="M76 45 C82 43 87 43 89 45 C87 49 82 48 76 46 Z" fill="#C6A16B" />
+  <!-- Leaf 3 -->
+  <path d="M74 48 C78 51 82 54 83 57 C78 57 75 53 73 49 Z" fill="#C6A16B" />
 </svg>

@@ -175,3 +175,4 @@ export const InvitationGallery: React.FC<InvitationGalleryProps> = ({ onSelectFo
     </section>
   );
 };
+

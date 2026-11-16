@@ -461,3 +461,4 @@ export const INITIAL_TEMPLATES: WeddingTemplate[] = [
     themeColor: '#C6A16B'
   }
 ];
+

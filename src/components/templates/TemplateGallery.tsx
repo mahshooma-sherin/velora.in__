@@ -218,3 +218,4 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectForOrd
     </section>
   );
 };
+

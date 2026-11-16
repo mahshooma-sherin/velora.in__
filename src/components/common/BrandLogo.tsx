@@ -15,75 +15,47 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  const textColor =
-    variant === 'light'
-      ? 'text-white'
-      : variant === 'gold'
-      ? 'text-[#C6A16B]'
-      : 'text-[#34251D]';
+  const heights = {
+    sm: 'h-9 sm:h-10',
+    md: 'h-11 sm:h-13 md:h-14',
+    lg: 'h-16 sm:h-20',
+    xl: 'h-20 sm:h-28',
+  };
 
   const subColor =
     variant === 'light'
-      ? 'text-white/70'
+      ? 'text-[#EFE5D8]/80'
       : variant === 'gold'
-      ? 'text-[#C6A16B]/80'
+      ? 'text-[#C6A16B]'
       : 'text-[#7E6F64]';
-
-  const sizeClasses = {
-    sm: 'text-lg tracking-[0.25em]',
-    md: 'text-2xl sm:text-3xl tracking-[0.3em]',
-    lg: 'text-4xl sm:text-5xl tracking-[0.35em]',
-    xl: 'text-5xl sm:text-6xl tracking-[0.4em]',
-  };
 
   return (
     <div className={`inline-flex flex-col items-center select-none group ${className}`}>
-      {/* If the user places an original uploaded logo file in /logo.png or /logo.svg */}
       {!imgError ? (
-        <img
-          src="/logo.png"
-          alt="VELORA"
-          className={`h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105 ${
-            variant === 'light' ? 'brightness-0 invert' : ''
-          }`}
-          onError={() => setImgError(true)}
-          style={{ display: imgError ? 'none' : 'block' }}
-        />
-      ) : null}
-
-      {/* Luxury Typographic & Emblem Logo (Renders by default or as primary SVG mark) */}
-      {imgError && (
-        <div className="flex items-center gap-2.5">
-          {/* Subtle Champagne Gold Emblem */}
-          <div className="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8">
-            <svg
-              viewBox="0 0 100 100"
-              className="w-full h-full text-[#C6A16B] transition-transform duration-700 ease-out group-hover:rotate-45"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              {/* Luxury Diamond Monogram Frame */}
-              <polygon points="50,5 95,50 50,95 5,50" stroke="currentColor" strokeWidth="2" strokeDasharray="2 3" />
-              <circle cx="50" cy="50" r="32" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M50 20 L50 80 M20 50 L80 50" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4" />
-              <path
-                d="M40 38 L50 62 L60 38"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
+        <div className="flex flex-col items-center">
+          <img
+            src={variant === 'light' ? '/logo-white.png' : '/logo.png'}
+            alt="VÉLORA — Wedding Digitals"
+            className={`${heights[size]} w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm`}
+            onError={() => setImgError(true)}
+          />
+        </div>
+      ) : (
+        /* Fallback: Luxury SVG Emblem & Wordmark */
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full border border-[#C6A16B] flex items-center justify-center text-[#C6A16B]">
+            <span className="font-serif italic text-lg font-medium">V</span>
           </div>
-
           <div className="flex flex-col">
             <span
-              className={`font-serif font-medium uppercase transition-colors duration-300 ${sizeClasses[size]} ${textColor}`}
-              style={{ letterSpacing: '0.28em' }}
+              className={`font-serif text-2xl tracking-[0.3em] uppercase ${
+                variant === 'light' ? 'text-white' : 'text-[#34251D]'
+              }`}
             >
-              VELORA
+              VÉLORA
+            </span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-[#C6A16B] font-sans">
+              Wedding Digitals
             </span>
           </div>
         </div>
@@ -91,8 +63,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
       {showTagline && (
         <span
-          className={`mt-1 font-serif italic text-xs tracking-widest uppercase transition-opacity duration-300 ${subColor}`}
-          style={{ letterSpacing: '0.18em', fontSize: '0.68rem' }}
+          className={`mt-1 font-serif italic text-xs tracking-[0.2em] uppercase transition-opacity duration-300 ${subColor}`}
         >
           Every love story deserves its own design
         </span>

@@ -124,7 +124,7 @@ Looking forward to creating something beautiful with Velora!`;
                   </div>
                   <div>
                     <h4 className="font-serif text-base text-[#34251D]">WhatsApp Business</h4>
-                    <p className="text-xs text-[#7E6F64]">Active 7 Days • Fast Response</p>
+                    <p className="text-xs text-[#7E6F64]">+91 70254 23395 • Active 7 Days</p>
                   </div>
                 </div>
 
@@ -141,6 +141,16 @@ Looking forward to creating something beautiful with Velora!`;
 
               {/* Social Channels */}
               <div className="space-y-3 pt-2 border-t border-[#C6A16B]/20">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#7E6F64]">Direct Enquiry:</span>
+                  <a
+                    href="tel:+917025423395"
+                    className="font-medium text-[#34251D] hover:text-[#C6A16B] transition-colors"
+                  >
+                    +91 70254 23395
+                  </a>
+                </div>
+
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-[#7E6F64]">Instagram Portfolio:</span>
                   <a
@@ -393,3 +403,4 @@ Looking forward to creating something beautiful with Velora!`;
     </section>
   );
 };
+

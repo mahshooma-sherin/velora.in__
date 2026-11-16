@@ -105,3 +105,4 @@ export const INITIAL_PACKAGES: PricingPackage[] = [
     deliveryTime: '12 Hours VIP'
   }
 ];
+

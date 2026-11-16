@@ -67,3 +67,4 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onExploreTemplates }) => {
     </section>
   );
 };
+

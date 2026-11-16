@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../context/StoreContext';
-import { Sparkles, Heart, MapPin, Calendar, Clock, Volume2, ArrowRight, Play } from 'lucide-react';
+import { Sparkles, Heart, MapPin, Calendar, Clock, Volume2, ArrowRight, Play, Check } from 'lucide-react';
 
 interface HeroProps {
   onExploreClick: () => void;
   onCreateClick: () => void;
-  onPreviewSample: () => void;
+  onPreviewSample?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   onExploreClick,
   onCreateClick,
-  onPreviewSample,
 }) => {
-  const { templates, openPreview } = useStore();
+  const { templates, openPreview, settings } = useStore();
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [mockRsvpCount, setMockRsvpCount] = useState(148);
   const [hasRsvpd, setHasRsvpd] = useState(false);
@@ -86,11 +85,11 @@ export const Hero: React.FC<HeroProps> = ({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#C6A16B]/40 bg-[#EFE5D8]/50 shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#C6A16B]/40 bg-[#EFE5D8]/60 shadow-sm"
             >
               <span className="w-2 h-2 rounded-full bg-[#C6A16B] animate-pulse" />
-              <span className="text-xs font-serif uppercase tracking-[0.22em] text-[#34251D] font-medium">
-                Bespoke Digital Invitations & Wedding Sites
+              <span className="text-xs font-serif uppercase tracking-[0.24em] text-[#34251D] font-medium">
+                VELORA • Wedding Websites & Digital Invitations
               </span>
             </motion.div>
 
@@ -114,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({
               transition={{ duration: 0.7, delay: 0.3 }}
               className="text-base sm:text-lg text-[#514338]/90 max-w-2xl mx-auto lg:mx-0 font-sans font-normal leading-relaxed"
             >
-              Discover elegant wedding websites and digital invitations, thoughtfully designed to celebrate your special moments. With live Google Maps directions, instant guest RSVP, and romantic music.
+              Discover elegant wedding websites and digital invitations, thoughtfully designed to celebrate your special moments. Crafted by Velora with live Google Maps directions, romantic music, and instant WhatsApp RSVP.
             </motion.p>
 
             {/* Highlights row */}
@@ -125,16 +124,16 @@ export const Hero: React.FC<HeroProps> = ({
               className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-2 text-xs uppercase tracking-wider text-[#7E6F64]"
             >
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C6A16B]" />
+                <Check className="w-3.5 h-3.5 text-[#C6A16B]" />
                 <span>Ready in 24 - 48 Hours</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C6A16B]" />
+                <Check className="w-3.5 h-3.5 text-[#C6A16B]" />
                 <span>Starting from ₹499</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C6A16B]" />
-                <span>Instant WhatsApp RSVP</span>
+                <Check className="w-3.5 h-3.5 text-[#C6A16B]" />
+                <span>30+ Live Collections</span>
               </div>
             </motion.div>
 
@@ -147,7 +146,7 @@ export const Hero: React.FC<HeroProps> = ({
             >
               <button
                 onClick={onExploreClick}
-                className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#34251D] text-[#F8F3EC] text-sm uppercase tracking-[0.16em] font-medium hover:bg-[#C6A16B] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-3 group"
+                className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#34251D] text-[#F8F3EC] text-xs uppercase tracking-[0.18em] font-medium hover:bg-[#C6A16B] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-3 group"
               >
                 <span>Explore Templates</span>
                 <ArrowRight className="w-4 h-4 text-[#C6A16B] group-hover:text-[#F8F3EC] group-hover:translate-x-1 transition-all" />
@@ -155,7 +154,7 @@ export const Hero: React.FC<HeroProps> = ({
 
               <button
                 onClick={onCreateClick}
-                className="w-full sm:w-auto px-8 py-4 rounded-full border border-[#C6A16B] text-[#34251D] hover:bg-[#EFE5D8]/70 text-sm uppercase tracking-[0.16em] font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-full border border-[#C6A16B] text-[#34251D] hover:bg-[#EFE5D8]/70 text-xs uppercase tracking-[0.18em] font-medium transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-4 h-4 text-[#C6A16B]" />
                 <span>Create Your Invitation</span>
@@ -174,6 +173,13 @@ export const Hero: React.FC<HeroProps> = ({
               {/* Outer Glow */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#C6A16B]/30 to-[#EFE5D8]/50 rounded-[50px] blur-2xl opacity-70 -z-10" />
 
+              {/* Top Studio Indicator */}
+              <div className="text-center mb-2.5">
+                <span className="text-[10px] uppercase tracking-[0.25em] font-serif text-[#C6A16B] font-semibold">
+                  Sample Live Experience
+                </span>
+              </div>
+
               {/* Realistic Smartphone Chassis */}
               <div className="relative rounded-[46px] p-3.5 bg-gradient-to-b from-[#4A3B32] via-[#2A1E17] to-[#1E140E] shadow-2xl ring-1 ring-white/10">
                 {/* Dynamic Island / Speaker Notch */}
@@ -187,7 +193,9 @@ export const Hero: React.FC<HeroProps> = ({
                   
                   {/* Top Bar inside Screen */}
                   <div className="pt-7 px-5 pb-2 flex justify-between items-center text-[11px] text-[#7E6F64] tracking-wider z-20">
-                    <span className="font-medium text-[#34251D]">VELORA LIVE</span>
+                    <span className="font-semibold text-[#34251D] tracking-widest text-[10px]">
+                      VELORA DEMO
+                    </span>
                     <button
                       onClick={() => setIsPlayingMusic(!isPlayingMusic)}
                       className="p-1 rounded-full bg-white/80 shadow-sm border border-[#C6A16B]/30 flex items-center gap-1 px-2 text-[10px] text-[#C6A16B]"
@@ -304,19 +312,19 @@ export const Hero: React.FC<HeroProps> = ({
                 </div>
                 <div>
                   <div className="text-[11px] font-semibold uppercase tracking-wider text-[#34251D]">
-                    Live Interactive Demo
+                    Template #A1 Demo
                   </div>
                   <div className="text-[10px] text-[#7E6F64]">
-                    Tap to test on mobile & desktop
+                    Tap to open full interactive preview
                   </div>
                 </div>
               </motion.div>
 
-              {/* Floating Review Badge */}
+              {/* Floating Brand Badge */}
               <div className="absolute -top-3 -right-2 sm:-right-4 bg-white/95 backdrop-blur-md py-2 px-3.5 rounded-2xl shadow-lg border border-[#C6A16B]/30 flex items-center gap-2">
                 <span className="text-[#C6A16B] text-xs">★★★★★</span>
                 <span className="text-[10px] font-medium text-[#34251D] tracking-wide">
-                  Verified Designs
+                  Velora Verified
                 </span>
               </div>
             </motion.div>

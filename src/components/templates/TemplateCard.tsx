@@ -140,3 +140,4 @@ export const TemplateCard: React.FC<TemplateCardProps> = ({ template, onSelectFo
     </motion.div>
   );
 };
+

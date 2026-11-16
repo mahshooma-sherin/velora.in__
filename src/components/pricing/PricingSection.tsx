@@ -242,3 +242,4 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPackage 
     </section>
   );
 };
+

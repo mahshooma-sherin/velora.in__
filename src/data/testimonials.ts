@@ -36,3 +36,4 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
     date: 'Recent Celebration'
   }
 ];
+

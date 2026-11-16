@@ -86,3 +86,4 @@ export const WhyChooseVeloraSection: React.FC = () => {
     </section>
   );
 };
+

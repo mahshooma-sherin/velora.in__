@@ -154,7 +154,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
               </li>
             </ul>
 
-            <div className="pt-4">
+            <div className="pt-4 space-y-2">
+              <p className="text-xs text-[#EFE5D8]/70">
+                Enquiries & Orders: <a href="tel:+917025423395" className="text-[#C6A16B] font-medium hover:underline">+91 70254 23395</a>
+              </p>
               <a
                 href={getWhatsAppLink()}
                 target="_blank"
@@ -203,3 +206,4 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
     </footer>
   );
 };
+

@@ -93,3 +93,4 @@ export interface SiteSettings {
   contactEmail: string;
   currencySymbol: string;
 }
+
