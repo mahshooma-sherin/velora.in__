@@ -48,10 +48,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   });
 
-  // Invitations state
+  // Invitations state (6 curated types)
   const [invitations] = useState<DigitalInvitation[]>(() => {
     try {
-      const saved = localStorage.getItem('velora_invitations');
+      const saved = localStorage.getItem('velora_invitations_v2');
       return saved ? JSON.parse(saved) : INITIAL_INVITATIONS;
     } catch {
       return INITIAL_INVITATIONS;
