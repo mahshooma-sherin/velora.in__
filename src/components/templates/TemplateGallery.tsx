@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { TemplateCategory } from '../../types';
 import { TemplateCard } from './TemplateCard';
-import { Search, Sparkles } from 'lucide-react';
+import { Search, Sparkles, Globe, Image } from 'lucide-react';
 
 const CATEGORIES: { label: string; value: TemplateCategory }[] = [
   { label: 'All (12)', value: 'All' },
@@ -22,6 +22,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectForOrd
   const { templates } = useStore();
   const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [allLive, setAllLive] = useState(false);
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
@@ -87,16 +88,47 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectForOrd
             })}
           </div>
 
-          {/* Quick Search */}
-          <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 text-[#7E6F64] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search couple or style..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 rounded-full text-xs bg-white border border-[#C6A16B]/30 text-[#34251D] placeholder:text-[#7E6F64]/70 focus:outline-none focus:ring-1 focus:ring-[#C6A16B]"
-            />
+          {/* View Mode Toggle & Search Bar */}
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            {/* View Mode Switcher */}
+            <div className="flex items-center bg-white p-1 rounded-full border border-[#C6A16B]/30 shadow-sm text-xs shrink-0">
+              <button
+                type="button"
+                onClick={() => setAllLive(false)}
+                className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                  !allLive
+                    ? 'bg-[#34251D] text-[#F8F3EC] shadow-sm font-medium'
+                    : 'text-[#514338] hover:text-[#34251D]'
+                }`}
+              >
+                <Image className="w-3.5 h-3.5" />
+                <span>Photos</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAllLive(true)}
+                className={`px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                  allLive
+                    ? 'bg-[#34251D] text-[#F8F3EC] shadow-sm font-medium'
+                    : 'text-[#514338] hover:text-[#34251D]'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-[#C6A16B]" />
+                <span>Run Live Web</span>
+              </button>
+            </div>
+
+            {/* Quick Search */}
+            <div className="relative w-full sm:w-60">
+              <Search className="w-3.5 h-3.5 text-[#7E6F64] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search style or couple..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-1.5 rounded-full text-xs bg-white border border-[#C6A16B]/30 text-[#34251D] placeholder:text-[#7E6F64]/70 focus:outline-none focus:ring-1 focus:ring-[#C6A16B]"
+              />
+            </div>
           </div>
         </div>
 
@@ -107,6 +139,7 @@ export const TemplateGallery: React.FC<TemplateGalleryProps> = ({ onSelectForOrd
               key={template.id}
               template={template}
               onSelectForOrder={onSelectForOrder}
+              forceLive={allLive}
             />
           ))}
         </div>

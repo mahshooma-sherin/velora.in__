@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../context/StoreContext';
-import { Sparkles, Heart, MapPin, Calendar, Clock, Volume2, ArrowRight, Play, Check } from 'lucide-react';
+import { Sparkles, Heart, Volume2, VolumeX, ArrowRight, Play, Pause, Check, Smartphone, Layers, ExternalLink } from 'lucide-react';
 
 interface HeroProps {
   onExploreClick: () => void;
@@ -13,40 +13,35 @@ export const Hero: React.FC<HeroProps> = ({
   onExploreClick,
   onCreateClick,
 }) => {
-  const { templates, openPreview, settings } = useStore();
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const [mockRsvpCount, setMockRsvpCount] = useState(148);
-  const [hasRsvpd, setHasRsvpd] = useState(false);
+  const { templates, openPreview } = useStore();
+  const [phoneMode, setPhoneMode] = useState<'video' | 'live'>('video');
+  const [activeTemplateIndex, setActiveTemplateIndex] = useState(0);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Sample countdown timer state for mockup
-  const [timeLeft, setTimeLeft] = useState({
-    days: 48,
-    hours: 14,
-    minutes: 32,
-    seconds: 18,
-  });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 };
-        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { ...prev, days: Math.max(0, prev.days - 1), hours: 23, minutes: 59, seconds: 59 };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleMockRsvp = (e: React.MouseEvent) => {
+  const toggleVideoPlayback = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!hasRsvpd) {
-      setHasRsvpd(true);
-      setMockRsvpCount((prev) => prev + 1);
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsVideoPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsVideoPlaying(false);
+      }
     }
   };
 
-  const sampleTemplate = templates[0]; // Erfana & Sukail (A1)
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      videoRef.current.muted = !isVideoMuted;
+      setIsVideoMuted(!isVideoMuted);
+    }
+  };
+
+  const currentLiveTemplate = templates[activeTemplateIndex] || templates[0];
 
   return (
     <section id="home" className="relative min-h-[95vh] lg:min-h-screen pt-28 pb-16 sm:pb-24 flex items-center overflow-hidden bg-gradient-to-b from-[#F8F3EC] via-[#F8F3EC] to-[#EFE5D8]/40">
@@ -162,166 +157,157 @@ export const Hero: React.FC<HeroProps> = ({
             </motion.div>
           </div>
 
-          {/* Right Column: Realistic Smartphone Mockup Displaying Live Wedding Invitation */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          {/* Right Column: Realistic Smartphone Mockup Displaying Velora Video Showcase or Live Running Templates */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:items-end">
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full max-w-[320px] sm:max-w-[340px]"
             >
+              {/* Mode Switcher Tabs above Phone */}
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <button
+                  type="button"
+                  onClick={() => setPhoneMode('video')}
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-serif uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 shadow-sm ${
+                    phoneMode === 'video'
+                      ? 'bg-[#34251D] text-[#F8F3EC] shadow-md border border-[#C6A16B]/50 font-medium'
+                      : 'bg-[#EFE5D8]/80 text-[#514338] hover:bg-[#EFE5D8] border border-[#C6A16B]/20'
+                  }`}
+                >
+                  <Play className="w-3 h-3 text-[#C6A16B] fill-current" />
+                  <span>Velora Reel</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPhoneMode('live')}
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-serif uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 shadow-sm ${
+                    phoneMode === 'live'
+                      ? 'bg-[#34251D] text-[#F8F3EC] shadow-md border border-[#C6A16B]/50 font-medium'
+                      : 'bg-[#EFE5D8]/80 text-[#514338] hover:bg-[#EFE5D8] border border-[#C6A16B]/20'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Run Live Web</span>
+                </button>
+              </div>
+
               {/* Outer Glow */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#C6A16B]/30 to-[#EFE5D8]/50 rounded-[50px] blur-2xl opacity-70 -z-10" />
 
-              {/* Top Studio Indicator */}
-              <div className="text-center mb-2.5">
-                <span className="text-[10px] uppercase tracking-[0.25em] font-serif text-[#C6A16B] font-semibold">
-                  Sample Live Experience
-                </span>
-              </div>
-
               {/* Realistic Smartphone Chassis */}
-              <div className="relative rounded-[46px] p-3.5 bg-gradient-to-b from-[#4A3B32] via-[#2A1E17] to-[#1E140E] shadow-2xl ring-1 ring-white/10">
-                {/* Dynamic Island / Speaker Notch */}
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-30 flex items-center justify-end pr-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#111] ring-1 ring-white/10 mr-1" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse" />
-                </div>
+              <div className="relative rounded-[46px] p-3 bg-gradient-to-b from-[#4A3B32] via-[#2A1E17] to-[#1E140E] shadow-2xl ring-1 ring-white/10">
+                {/* Dynamic Island / Speaker Notch (visible in live template mode) */}
+                {phoneMode === 'live' && (
+                  <div className="absolute top-5 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-30 flex items-center justify-end pr-2 pointer-events-none">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#111] ring-1 ring-white/10 mr-1" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse" />
+                  </div>
+                )}
 
                 {/* Smartphone Screen Glass */}
-                <div className="relative rounded-[36px] overflow-hidden bg-[#F8F3EC] aspect-[9/19] flex flex-col text-[#34251D] select-none shadow-inner border border-white/20">
-                  
-                  {/* Top Bar inside Screen */}
-                  <div className="pt-7 px-5 pb-2 flex justify-between items-center text-[11px] text-[#7E6F64] tracking-wider z-20">
-                    <span className="font-semibold text-[#34251D] tracking-widest text-[10px]">
-                      VELORA DEMO
-                    </span>
-                    <button
-                      onClick={() => setIsPlayingMusic(!isPlayingMusic)}
-                      className="p-1 rounded-full bg-white/80 shadow-sm border border-[#C6A16B]/30 flex items-center gap-1 px-2 text-[10px] text-[#C6A16B]"
-                    >
-                      <Volume2 className={`w-3 h-3 ${isPlayingMusic ? 'text-[#C6A16B] animate-bounce' : 'text-[#7E6F64]'}`} />
-                      <span>{isPlayingMusic ? 'Playing' : 'Music'}</span>
-                    </button>
-                  </div>
+                <div className="relative rounded-[36px] overflow-hidden bg-black aspect-[9/19] flex flex-col text-[#34251D] select-none shadow-inner border border-white/20">
+                  {phoneMode === 'video' ? (
+                    /* Video Showcase Mode */
+                    <div className="relative w-full h-full bg-[#1A120B] overflow-hidden flex items-center justify-center group/video">
+                      <video
+                        ref={videoRef}
+                        src="/videos/velora-phone-showcase.mp4"
+                        poster="/videos/velora-phone-thumb.jpg"
+                        autoPlay
+                        loop
+                        muted={isVideoMuted}
+                        playsInline
+                        className="w-full h-full object-cover"
+                      />
 
-                  {/* Wedding Invitation Hero inside phone */}
-                  <div className="relative flex-1 flex flex-col items-center justify-between p-5 pt-2 text-center bg-cover bg-center overflow-y-auto no-scrollbar"
-                    style={{
-                      backgroundImage: `linear-gradient(to bottom, rgba(248, 243, 236, 0.88), rgba(248, 243, 236, 0.94)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80')`
-                    }}
-                  >
-                    {/* Monogram Seal */}
-                    <div className="mt-2 flex flex-col items-center">
-                      <div className="w-11 h-11 rounded-full border border-[#C6A16B] flex items-center justify-center bg-white/70 shadow-sm">
-                        <span className="font-serif italic text-base text-[#C6A16B] font-semibold">E & S</span>
-                      </div>
-                      <span className="text-[10px] uppercase font-serif tracking-[0.25em] text-[#7E6F64] mt-1.5">
-                        Together with their families
-                      </span>
-                    </div>
+                      {/* Video overlay controls */}
+                      <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-auto">
+                        <button
+                          type="button"
+                          onClick={toggleVideoPlayback}
+                          className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 shadow-md transition-all"
+                          title={isVideoPlaying ? 'Pause Video' : 'Play Video'}
+                        >
+                          {isVideoPlaying ? <Pause className="w-3.5 h-3.5 text-[#C6A16B]" /> : <Play className="w-3.5 h-3.5 text-[#C6A16B] fill-current" />}
+                        </button>
 
-                    {/* Couple Names */}
-                    <div className="my-2">
-                      <h3 className="font-serif text-2xl font-normal text-[#34251D] tracking-wide">
-                        Erfana & Sukail
-                      </h3>
-                      <div className="w-12 h-[1px] bg-[#C6A16B] mx-auto my-1.5" />
-                      <p className="text-[11px] font-serif italic text-[#C6A16B] tracking-wider">
-                        Request the honour of your presence
-                      </p>
-                    </div>
-
-                    {/* Event Date & Location */}
-                    <div className="w-full bg-white/75 backdrop-blur-sm rounded-2xl p-3 border border-[#C6A16B]/20 shadow-sm space-y-1.5 text-left text-[11px]">
-                      <div className="flex items-center gap-2 text-[#514338]">
-                        <Calendar className="w-3.5 h-3.5 text-[#C6A16B] flex-shrink-0" />
-                        <span>Sunday, December 28, 2026</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[#514338]">
-                        <Clock className="w-3.5 h-3.5 text-[#C6A16B] flex-shrink-0" />
-                        <span>11:00 AM • Nikah & Walima</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-[#514338]">
-                        <MapPin className="w-3.5 h-3.5 text-[#C6A16B] flex-shrink-0" />
-                        <span className="truncate">The Leela Palace, Kovalam</span>
+                        <button
+                          type="button"
+                          onClick={toggleMute}
+                          className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 text-[10px] uppercase font-serif tracking-wider flex items-center gap-1.5 shadow-md transition-all"
+                        >
+                          {isVideoMuted ? <VolumeX className="w-3.5 h-3.5 text-red-300" /> : <Volume2 className="w-3.5 h-3.5 text-[#C6A16B]" />}
+                          <span>{isVideoMuted ? 'Muted' : 'Sound On'}</span>
+                        </button>
                       </div>
                     </div>
-
-                    {/* Live Countdown in Phone */}
-                    <div className="w-full my-2">
-                      <div className="text-[9px] uppercase tracking-widest text-[#7E6F64] font-serif mb-1">
-                        Celebrating In
-                      </div>
-                      <div className="grid grid-cols-4 gap-1.5 text-center">
-                        <div className="bg-white/80 rounded-lg p-1.5 shadow-sm border border-[#C6A16B]/15">
-                          <span className="block text-xs font-serif font-bold text-[#34251D]">{timeLeft.days}</span>
-                          <span className="text-[8px] uppercase tracking-wider text-[#7E6F64]">Days</span>
+                  ) : (
+                    /* Live Running Template Website Mode */
+                    <div className="relative w-full h-full bg-[#F8F3EC] flex flex-col">
+                      {/* Top Header inside phone */}
+                      <div className="pt-8 px-4 pb-2 bg-[#EFE5D8] flex items-center justify-between text-[11px] border-b border-[#C6A16B]/20">
+                        <div className="flex items-center gap-1.5 truncate max-w-[180px]">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                          <span className="font-semibold text-[#34251D] truncate">
+                            {currentLiveTemplate.name}
+                          </span>
                         </div>
-                        <div className="bg-white/80 rounded-lg p-1.5 shadow-sm border border-[#C6A16B]/15">
-                          <span className="block text-xs font-serif font-bold text-[#34251D]">{timeLeft.hours}</span>
-                          <span className="text-[8px] uppercase tracking-wider text-[#7E6F64]">Hrs</span>
-                        </div>
-                        <div className="bg-white/80 rounded-lg p-1.5 shadow-sm border border-[#C6A16B]/15">
-                          <span className="block text-xs font-serif font-bold text-[#34251D]">{timeLeft.minutes}</span>
-                          <span className="text-[8px] uppercase tracking-wider text-[#7E6F64]">Mins</span>
-                        </div>
-                        <div className="bg-white/80 rounded-lg p-1.5 shadow-sm border border-[#C6A16B]/15">
-                          <span className="block text-xs font-serif font-bold text-[#C6A16B]">{timeLeft.seconds}</span>
-                          <span className="text-[8px] uppercase tracking-wider text-[#7E6F64]">Sec</span>
-                        </div>
+                        <span className="text-[10px] font-serif font-bold text-[#C6A16B] shrink-0">
+                          ₹{currentLiveTemplate.price}
+                        </span>
+                      </div>
+
+                      {/* Actual Live Website Running in Iframe */}
+                      <div className="flex-1 w-full h-full relative overflow-hidden bg-white">
+                        <iframe
+                          src={currentLiveTemplate.demoUrl}
+                          title={currentLiveTemplate.name}
+                          className="w-full h-full border-0 select-auto"
+                          loading="lazy"
+                          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                        />
                       </div>
                     </div>
-
-                    {/* Interactive RSVP Action in Phone */}
-                    <div className="w-full space-y-2 mt-1">
-                      <button
-                        onClick={handleMockRsvp}
-                        className={`w-full py-2.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center justify-center gap-1.5 ${
-                          hasRsvpd
-                            ? 'bg-emerald-700 text-white'
-                            : 'bg-[#34251D] text-[#F8F3EC] hover:bg-[#C6A16B]'
-                        }`}
-                      >
-                        <Heart className="w-3 h-3 fill-current text-[#C6A16B]" />
-                        <span>{hasRsvpd ? 'RSVP Confirmed!' : `Tap to RSVP (${mockRsvpCount} Attending)`}</span>
-                      </button>
-
-                      <div className="text-[9px] text-[#7E6F64] flex items-center justify-center gap-1">
-                        <span>✨ Google Maps & Guestbook Enabled</span>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* Home Bar */}
-                  <div className="py-2 flex justify-center bg-[#F8F3EC]/90 border-t border-[#C6A16B]/10">
-                    <div className="w-28 h-1 bg-[#34251D]/20 rounded-full" />
-                  </div>
+                  )}
                 </div>
               </div>
 
-              {/* Floating "Live Demo" Pill Badge */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="absolute -bottom-5 -left-4 sm:-left-6 bg-white/95 backdrop-blur-md py-2.5 px-4 rounded-2xl shadow-xl border border-[#C6A16B]/30 flex items-center gap-3 cursor-pointer"
-                onClick={() => openPreview(sampleTemplate)}
-              >
-                <div className="w-9 h-9 rounded-full bg-[#C6A16B]/15 flex items-center justify-center text-[#C6A16B]">
-                  <Play className="w-4 h-4 fill-current ml-0.5" />
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-[#34251D]">
-                    Template #A1 Demo
+              {/* Template Quick Switcher Chips below phone */}
+              {phoneMode === 'live' ? (
+                <div className="mt-3 w-full">
+                  <div className="text-[10px] uppercase tracking-widest text-[#7E6F64] font-serif text-center mb-1.5">
+                    Switch Live Template:
                   </div>
-                  <div className="text-[10px] text-[#7E6F64]">
-                    Tap to open full interactive preview
+                  <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                    {templates.slice(0, 4).map((t, idx) => (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => setActiveTemplateIndex(idx)}
+                        className={`px-2.5 py-1 rounded-full text-[10px] transition-all ${
+                          activeTemplateIndex === idx
+                            ? 'bg-[#34251D] text-[#F8F3EC] font-semibold shadow-sm'
+                            : 'bg-white/90 text-[#514338] border border-[#C6A16B]/25 hover:bg-white'
+                        }`}
+                      >
+                        {t.name.split(' ')[0]}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              </motion.div>
+              ) : (
+                /* Bottom indicator for video mode */
+                <div className="mt-3 text-center">
+                  <span className="text-[10px] uppercase tracking-[0.2em] font-serif text-[#7E6F64]">
+                    Official Velora Showcase Reel
+                  </span>
+                </div>
+              )}
 
               {/* Floating Brand Badge */}
-              <div className="absolute -top-3 -right-2 sm:-right-4 bg-white/95 backdrop-blur-md py-2 px-3.5 rounded-2xl shadow-lg border border-[#C6A16B]/30 flex items-center gap-2">
+              <div className="absolute -top-3 -right-2 sm:-right-4 bg-white/95 backdrop-blur-md py-1.5 px-3 rounded-2xl shadow-lg border border-[#C6A16B]/30 flex items-center gap-1.5 z-20">
                 <span className="text-[#C6A16B] text-xs">★★★★★</span>
                 <span className="text-[10px] font-medium text-[#34251D] tracking-wide">
                   Velora Verified

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../context/StoreContext';
 import { TemplateCard } from '../templates/TemplateCard';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Globe, Image } from 'lucide-react';
 
 interface FeaturedTemplatesSectionProps {
   onExploreAll: () => void;
@@ -14,6 +14,7 @@ export const FeaturedTemplatesSection: React.FC<FeaturedTemplatesSectionProps> =
   onSelectForOrder
 }) => {
   const { templates } = useStore();
+  const [allLive, setAllLive] = useState(false);
 
   // Pick top 6 curated templates across collections
   const featured = templates.filter(t => t.isFeatured).slice(0, 6);
@@ -23,7 +24,7 @@ export const FeaturedTemplatesSection: React.FC<FeaturedTemplatesSectionProps> =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EFE5D8] border border-[#C6A16B]/30">
               <Sparkles className="w-3.5 h-3.5 text-[#C6A16B]" />
@@ -37,16 +38,44 @@ export const FeaturedTemplatesSection: React.FC<FeaturedTemplatesSectionProps> =
             </h2>
 
             <p className="text-sm sm:text-base text-[#514338]/90 font-sans leading-relaxed">
-              Explore our most requested couple designs across Hindu, Muslim, Christian, and Modern ceremonies. Tap Live Preview to experience working countdowns and maps.
+              Experience working countdowns, real Google Maps, romantic music, and instant WhatsApp RSVP running live in your browser.
             </p>
           </div>
 
-          <div>
+          <div className="flex flex-wrap items-center gap-3">
+            {/* View Mode Toggle: Photo Cards vs Run Live Websites */}
+            <div className="flex items-center bg-white p-1 rounded-full border border-[#C6A16B]/30 shadow-sm text-xs">
+              <button
+                type="button"
+                onClick={() => setAllLive(false)}
+                className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                  !allLive
+                    ? 'bg-[#34251D] text-[#F8F3EC] shadow-sm font-medium'
+                    : 'text-[#514338] hover:text-[#34251D]'
+                }`}
+              >
+                <Image className="w-3.5 h-3.5" />
+                <span>Photos</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAllLive(true)}
+                className={`px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                  allLive
+                    ? 'bg-[#34251D] text-[#F8F3EC] shadow-sm font-medium'
+                    : 'text-[#514338] hover:text-[#34251D]'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-[#C6A16B]" />
+                <span>Run Live Web</span>
+              </button>
+            </div>
+
             <button
               onClick={onExploreAll}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#34251D] text-[#F8F3EC] text-xs uppercase tracking-widest font-medium hover:bg-[#C6A16B] transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#34251D] text-[#F8F3EC] text-xs uppercase tracking-widest font-medium hover:bg-[#C6A16B] transition-colors shadow-sm"
             >
-              <span>View All 30 Templates</span>
+              <span>All 12 Templates</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#C6A16B]" />
             </button>
           </div>
@@ -59,6 +88,7 @@ export const FeaturedTemplatesSection: React.FC<FeaturedTemplatesSectionProps> =
               key={template.id}
               template={template}
               onSelectForOrder={onSelectForOrder}
+              forceLive={allLive}
             />
           ))}
         </div>
