@@ -13,19 +13,74 @@ export const Hero: React.FC<HeroProps> = ({
   onExploreClick,
   onCreateClick,
 }) => {
-  const { templates, openPreview } = useStore();
+  const { templates } = useStore();
   const [phoneMode, setPhoneMode] = useState<'video' | 'live'>('video');
   const [activeTemplateIndex, setActiveTemplateIndex] = useState(0);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const toggleVideoPlayback = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Guarantee seamless video autoplay on all mobile devices (iOS Safari & Android Chrome)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Mobile browsers require muted & playsInline explicitly on DOM element
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
+
+    let isMounted = true;
+
+    const attemptPlay = () => {
+      if (!video) return;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (isMounted) setIsVideoPlaying(true);
+          })
+          .catch((err) => {
+            console.warn('Mobile browser paused video (waiting for first gesture):', err);
+            if (isMounted) setIsVideoPlaying(false);
+
+            // If mobile OS blocks autoplay (e.g. Low Power Mode), resume on first touch or scroll
+            const resumeOnGesture = () => {
+              if (videoRef.current) {
+                videoRef.current.muted = true;
+                videoRef.current.play().then(() => {
+                  if (isMounted) setIsVideoPlaying(true);
+                }).catch(() => {});
+              }
+              window.removeEventListener('touchstart', resumeOnGesture);
+              window.removeEventListener('touchend', resumeOnGesture);
+              window.removeEventListener('scroll', resumeOnGesture);
+              window.removeEventListener('click', resumeOnGesture);
+            };
+
+            window.addEventListener('touchstart', resumeOnGesture, { once: true, passive: true });
+            window.addEventListener('touchend', resumeOnGesture, { once: true, passive: true });
+            window.addEventListener('scroll', resumeOnGesture, { once: true, passive: true });
+            window.addEventListener('click', resumeOnGesture, { once: true });
+          });
+      }
+    };
+
+    attemptPlay();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [phoneMode]);
+
+  const toggleVideoPlayback = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsVideoPlaying(true);
+        videoRef.current.play().then(() => setIsVideoPlaying(true)).catch(() => {});
       } else {
         videoRef.current.pause();
         setIsVideoPlaying(false);
@@ -33,11 +88,15 @@ export const Hero: React.FC<HeroProps> = ({
     }
   };
 
-  const toggleMute = (e: React.MouseEvent) => {
+  const toggleMute = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
-      videoRef.current.muted = !isVideoMuted;
-      setIsVideoMuted(!isVideoMuted);
+      const newMuted = !isVideoMuted;
+      videoRef.current.muted = newMuted;
+      setIsVideoMuted(newMuted);
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+      }
     }
   };
 
@@ -210,33 +269,61 @@ export const Hero: React.FC<HeroProps> = ({
                 <div className="relative rounded-[36px] overflow-hidden bg-black aspect-[9/19] flex flex-col text-[#34251D] select-none shadow-inner border border-white/20">
                   {phoneMode === 'video' ? (
                     /* Video Showcase Mode */
-                    <div className="relative w-full h-full bg-[#1A120B] overflow-hidden flex items-center justify-center group/video">
+                    <div
+                      className="relative w-full h-full bg-[#1A120B] overflow-hidden flex items-center justify-center group/video cursor-pointer"
+                      onClick={() => toggleVideoPlayback()}
+                    >
                       <video
                         ref={videoRef}
                         src="/videos/velora-phone-showcase.mp4"
                         poster="/videos/velora-phone-thumb.jpg"
                         autoPlay
                         loop
-                        muted={isVideoMuted}
+                        muted
                         playsInline
-                        className="w-full h-full object-cover"
+                        // @ts-ignore
+                        webkit-playsinline="true"
+                        preload="auto"
+                        onPlay={() => setIsVideoPlaying(true)}
+                        onPause={() => setIsVideoPlaying(false)}
+                        onEnded={() => {
+                          if (videoRef.current) {
+                            videoRef.current.currentTime = 0;
+                            videoRef.current.play().catch(() => {});
+                          }
+                        }}
+                        className="w-full h-full object-cover select-none"
                       />
+
+                      {/* Prominent Golden Play Button when Video is Stopped on Mobile */}
+                      {!isVideoPlaying && (
+                        <div className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-black/75 backdrop-blur-md border border-[#C6A16B] text-white flex items-center justify-center shadow-2xl z-30 pointer-events-none animate-pulse">
+                          <Play className="w-7 h-7 text-[#C6A16B] fill-current ml-1" />
+                        </div>
+                      )}
 
                       {/* Video overlay controls */}
                       <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-auto">
                         <button
                           type="button"
-                          onClick={toggleVideoPlayback}
-                          className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 shadow-md transition-all"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleVideoPlayback(e);
+                          }}
+                          className="p-2 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 shadow-md transition-all active:scale-95"
                           title={isVideoPlaying ? 'Pause Video' : 'Play Video'}
+                          aria-label={isVideoPlaying ? 'Pause' : 'Play'}
                         >
                           {isVideoPlaying ? <Pause className="w-3.5 h-3.5 text-[#C6A16B]" /> : <Play className="w-3.5 h-3.5 text-[#C6A16B] fill-current" />}
                         </button>
 
                         <button
                           type="button"
-                          onClick={toggleMute}
-                          className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20 text-[10px] uppercase font-serif tracking-wider flex items-center gap-1.5 shadow-md transition-all"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMute(e);
+                          }}
+                          className="px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 text-white backdrop-blur-md border border-white/20 text-[10px] uppercase font-serif tracking-wider flex items-center gap-1.5 shadow-md transition-all active:scale-95"
                         >
                           {isVideoMuted ? <VolumeX className="w-3.5 h-3.5 text-red-300" /> : <Volume2 className="w-3.5 h-3.5 text-[#C6A16B]" />}
                           <span>{isVideoMuted ? 'Muted' : 'Sound On'}</span>
